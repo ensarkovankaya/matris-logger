@@ -2,7 +2,8 @@
   "name": "matris-logger",
   "version": "1.0.0",
   "description": "Wrapper for winstonjs.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types" : "dist/index.d.ts",
   "directories": {
     "test": "test"
   },
@@ -14,6 +15,7 @@
   },
   "author": "Ensar Kovankaya <ensar@kovankaya.com> (https://kovankaya.com)",
   "license": "ISC",
+  "keywords": [],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ensarkovankaya/matris-logger"
