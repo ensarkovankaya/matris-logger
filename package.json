@@ -1,7 +1,7 @@
 {
   "name": "matris-logger",
   "version": "1.0.0",
-  "description": "Logger for Matrix project",
+  "description": "Wrapper for winstonjs.",
   "main": "index.js",
   "directories": {
     "test": "test"
