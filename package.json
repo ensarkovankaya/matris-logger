@@ -1,5 +1,5 @@
 {
-  "name": "matrix-logger",
+  "name": "matris-logger",
   "version": "1.0.0",
   "description": "Logger for Matrix project",
   "main": "index.js",
