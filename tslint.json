@@ -1,0 +1,18 @@
+{
+  "defaultSeverity": "error",
+  "extends": "./node_modules/tslint/lib/configs/recommended",
+  "jsRules": {},
+  "rules": {
+    "max-classes-per-file": [
+      true
+    ],
+    "object-literal-sort-keys": false,
+    "trailing-comma": false,
+    "arrow-parens": [
+      true,
+      "ban-single-arg-parens"
+    ],
+    "quotemark": false
+  },
+  "rulesDirectory": []
+}

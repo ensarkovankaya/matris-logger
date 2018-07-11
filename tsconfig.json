@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "strict": true,
+    "lib": [
+      "es6",
+      "esnext.asynciterable"
+    ],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "outDir": "./dist",
+    "sourceMap": true,
+    "target": "es6",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "compileOnSave": true,
+  "include": [
+    "lib/"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}
