@@ -8,6 +8,12 @@ export class Logger {
         this.logger = wCreateLogger(options);
     }
 
+    /**
+     * Critical Level log
+     * @param {string} message Log message
+     * @param {Error} error Optinal Error object
+     * @param meta Optional data
+     */
     public critical(message: string, error?: Error, meta?: any) {
         this.log('critical', message, {
             error: error ? {name: error.name, message: error.message, stack: error.stack} : error,
@@ -15,18 +21,42 @@ export class Logger {
         });
     }
 
-    public error(location: string, message: string, error: Error, meta?: any) {
-        this.log('error', message, {error, meta});
+    /**
+     * Error Level log
+     * @param {string} message Log message
+     * @param {Error} error Error object
+     * @param meta Optional data
+     */
+    public error(message: string, error: Error, meta?: any) {
+        this.log('error', message, {
+            error: {name: error.name, message: error.message, stack: error.stack},
+            meta
+        });
     }
 
-    public warn(location: string, message: string, meta?: any) {
+    /**
+     * Warning Level log
+     * @param {string} message Log message
+     * @param meta Optional data
+     */
+    public warn(message: string, meta?: any) {
         this.log('warning', message, {meta});
     }
 
+    /**
+     * Info Level log
+     * @param {string} message Log message
+     * @param meta Optional data
+     */
     public info(message: string, meta?: any) {
         this.log('info', message, {meta});
     }
 
+    /**
+     * Debug Level log
+     * @param {string} message Log message
+     * @param meta Optional data
+     */
     public debug(message: string, meta?: any) {
         this.log('debug', message, {meta});
     }
