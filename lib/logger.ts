@@ -1,11 +1,31 @@
-import { createLogger as wCreateLogger, Logger as wLogger, LoggerOptions } from 'winston';
-import { IRequest } from './models/request.model';
+import {Logger as PinoLogger} from 'pino';
+import { LogLevel } from './models/loglevel.model';
+import * as http from 'http';
+
+export interface IChildLoggerOptions {
+    level: LogLevel;
+}
 
 export class Logger {
-    private logger: wLogger;
+    private logger: PinoLogger;
 
-    constructor(private name: string, private labels: string[] = [], private options: LoggerOptions = {}) {
-        this.logger = wCreateLogger(options);
+    /**
+     * Child logger object.
+     * @param {string} name: Child logger name.
+     * @param {string[]} labels: Aditional identifier for logger.
+     * @param {PinoLogger} root: Root pino logger object.
+     * @param {IChildLoggerOptions} options: Overwrite options for child.
+     */
+    constructor(public name: string, public labels: string[] = [], root: PinoLogger, options: Partial<IChildLoggerOptions> = {}) {
+        this.logger = root.child({logger: name, labels, ...options});
+    }
+
+    /**
+     * Changes log level
+     * @param {LogLevel} level: new Log level.
+     */
+    public setLevel(level: LogLevel) {
+        this.logger.level = level;
     }
 
     /**
@@ -14,11 +34,11 @@ export class Logger {
      * @param {Error} error Optinal Error object
      * @param meta Optional data
      */
-    public critical(message: string, error?: Error, meta?: any) {
-        this.log('critical', message, {
+    public fatal(message: string, error?: Error, meta?: any) {
+        this.logger.fatal({
             error: error ? {name: error.name, message: error.message, stack: error.stack} : error,
             meta
-        });
+        }, message);
     }
 
     /**
@@ -28,10 +48,10 @@ export class Logger {
      * @param meta Optional data
      */
     public error(message: string, error: Error, meta?: any) {
-        this.log('error', message, {
+        this.logger.error({
             error: {name: error.name, message: error.message, stack: error.stack},
             meta
-        });
+        }, message);
     }
 
     /**
@@ -40,7 +60,7 @@ export class Logger {
      * @param meta Optional data
      */
     public warn(message: string, meta?: any) {
-        this.log('warning', message, {meta});
+        this.logger.warn({meta}, message);
     }
 
     /**
@@ -49,7 +69,7 @@ export class Logger {
      * @param meta Optional data
      */
     public info(message: string, meta?: any) {
-        this.log('info', message, {meta});
+        this.logger.info({meta}, message);
     }
 
     /**
@@ -58,39 +78,16 @@ export class Logger {
      * @param meta Optional data
      */
     public debug(message: string, meta?: any) {
-        this.log('debug', message, {meta});
+        this.logger.debug({meta}, message);
     }
 
     /**
      * Http Level Log
      * @param {string} message: Log message
-     * @param {IRequest} req: Request object
+     * @param {http.IncomingMessage} req: Request object
      * @param meta: Optional data
      */
-    public http(message: string, req: IRequest, meta?: any) {
-        this.log('http', message, {
-            meta,
-            request: {
-                params: req.params,
-                query: req.query,
-                headers: req.headers,
-                body: req.body,
-                baseUrl: req.baseUrl,
-                originalUrl: req.originalUrl,
-                httpVersion: req.httpVersion,
-                url: req.url,
-                method: req.method
-            }
-        });
-    }
-
-    /**
-     * Log
-     * @param {string} level: Log level
-     * @param {string} message: Log message
-     * @param {object} fields: Other fields
-     */
-    private log(level: string, message: string, fields: object = {}) {
-        this.logger.log(level, message, {name: this.name, labels: this.labels, ...fields});
+    public http(message: string, req?: http.IncomingMessage, res?: http.OutgoingMessage, meta?: any) {
+        this.logger.debug({meta, req, res, type: 'http'}, message);
     }
 }
