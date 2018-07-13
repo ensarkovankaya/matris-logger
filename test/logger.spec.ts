@@ -9,21 +9,21 @@ class ShouldNotSucceed extends Error {
 
 describe('Logger', () => {
     it('should initialize root logger', () => {
-        const rootLogger = new RootLogger({name: 'libs/logger'});
+        const rootLogger = new RootLogger();
         expect(rootLogger).to.be.an('object');
         expect(rootLogger.getLogger).to.be.a('function');
         expect(rootLogger).to.have.keys(['options']);
         expect(rootLogger.options).to.have.keys(['name', 'level', 'serializers', 'nodeEnv']);
     });
     it('should get child logger', () => {
-        const rootLogger = new RootLogger({name: 'libs/logger'});
+        const rootLogger = new RootLogger();
         expect(rootLogger.getLogger).to.be.a('function');
         const childLogger = rootLogger.getLogger('TestService');
         expect(childLogger).to.be.an('object');
         expect(childLogger.name).to.be.eq('TestService');
     });
     it('should except labels', () => {
-        const rootLogger = new RootLogger({name: 'libs/logger'});
+        const rootLogger = new RootLogger();
         expect(rootLogger.getLogger).to.be.a('function');
         const childLogger = rootLogger.getLogger('TestService', ['service']);
         expect(childLogger).to.be.an('object');
@@ -32,22 +32,22 @@ describe('Logger', () => {
         expect(childLogger.labels[0]).to.be.eq('service');
     });
     it('should log info', () => {
-        const rootLogger = new RootLogger({name: 'libs/logger'});
+        const rootLogger = new RootLogger();
         const childLogger = rootLogger.getLogger('TestService');
         childLogger.info('Info Message', {a: 1, b: {c: 2}});
     });
     it('should log debug', () => {
-        const rootLogger = new RootLogger({name: 'libs/logger'});
+        const rootLogger = new RootLogger();
         const childLogger = rootLogger.getLogger('TestService');
         childLogger.debug('Debug Message', {a: 1, b: {c: 2}});
     });
     it('should log warning', () => {
-        const rootLogger = new RootLogger({name: 'libs/logger'});
+        const rootLogger = new RootLogger();
         const childLogger = rootLogger.getLogger('TestService');
         childLogger.warn('Warning Message', {a: 1, b: {c: 2}});
     });
     it('should log fatal', () => {
-        const rootLogger = new RootLogger({name: 'libs/logger'});
+        const rootLogger = new RootLogger();
         const childLogger = rootLogger.getLogger('TestService');
         
         class FatalError extends Error {
@@ -62,7 +62,7 @@ describe('Logger', () => {
         }
     });
     it('should log error', () => {
-        const rootLogger = new RootLogger({name: 'libs/logger'});
+        const rootLogger = new RootLogger();
         const childLogger = rootLogger.getLogger('TestService');
         
         class TestError extends Error {
@@ -79,7 +79,7 @@ describe('Logger', () => {
     });
     
     it('should log http', () => {
-        const rootLogger = new RootLogger({name: 'libs/logger'});
+        const rootLogger = new RootLogger();
         const childLogger = rootLogger.getLogger('TestService');
         const req = {
             method: 'GET',
