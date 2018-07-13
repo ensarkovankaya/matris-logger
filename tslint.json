@@ -11,7 +11,7 @@
       "ban-single-arg-parens"
     ],
     "quotemark": false,
-    "no-console": false,
+    "no-console": false
   },
   "rulesDirectory": []
 }
