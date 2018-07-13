@@ -1,6 +1,6 @@
+import * as http from 'http';
 import {Logger as PinoLogger} from 'pino';
 import { LogLevel } from './models/loglevel.model';
-import * as http from 'http';
 
 export interface IChildLoggerOptions {
     level: LogLevel;
@@ -16,7 +16,12 @@ export class Logger {
      * @param {PinoLogger} root: Root pino logger object.
      * @param {IChildLoggerOptions} options: Overwrite options for child.
      */
-    constructor(public name: string, public labels: string[] = [], root: PinoLogger, options: Partial<IChildLoggerOptions> = {}) {
+    constructor(
+        public name: string,
+        public labels: string[] = [],
+        root: PinoLogger,
+        options: Partial<IChildLoggerOptions> = {}
+    ) {
         this.logger = root.child({logger: name, labels, ...options});
     }
 

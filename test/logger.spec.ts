@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import { describe, it, Test } from 'mocha';
 import { RootLogger } from '../lib';
-import * as http from 'http';
 
 class ShouldNotSucceed extends Error {
     public name = 'ShouldNotSucceed';
