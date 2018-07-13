@@ -13,7 +13,7 @@ describe('Logger', () => {
         expect(rootLogger).to.be.an('object');
         expect(rootLogger.getLogger).to.be.a('function');
         expect(rootLogger).to.have.keys(['options']);
-        expect(rootLogger.options).to.have.keys(['level', 'serializers', 'nodeEnv']);
+        expect(rootLogger.options).to.have.keys(['level', 'serializers']);
     });
     it('should get child logger', () => {
         const rootLogger = new RootLogger();

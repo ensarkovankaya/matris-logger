@@ -14,15 +14,15 @@ export class Logger {
      * @param {string} name: Child logger name.
      * @param {string[]} labels: Aditional identifier for logger.
      * @param {PinoLogger} root: Root pino logger object.
-     * @param {IChildLoggerOptions} options: Overwrite options for child.
+     * @param {ILoggerOptions} overwrites: Overwrite options for child.
      */
     constructor(
         public name: string,
         public labels: string[] = [],
         root: PinoLogger,
-        options: ILoggerOptions = {}
+        overwrites: ILoggerOptions = {}
     ) {
-        this.logger = root.child({name, labels, ...options});
+        this.logger = root.child({name, labels, nodeEnv: process.env.NODE_ENV, ...overwrites});
     }
 
     /**

@@ -10,16 +10,11 @@ export interface IRootConfig {
     serializers?: { [key: string]: pino.SerializerFn };
 }
 
-interface IRootLoggerOptions extends IRootConfig {
-    nodeEnv?: string;
-}
-
 export class RootLogger {
 
-    public options: IRootLoggerOptions;
+    public options: IRootConfig;
 
     constructor(options: Partial<IRootConfig> = {}) {
-        const nodeEnv = process ? (process.env ? process.env.NODE_ENV : undefined) : undefined;
         this.options = {
             level: isTest() ? 'silent' : isDevelopment() ? 'debug' : 'info',
             serializers: {
@@ -27,7 +22,6 @@ export class RootLogger {
                 req: serializers.req,
                 res: serializers.res
             },
-            nodeEnv,
             ...options
         };
     }
