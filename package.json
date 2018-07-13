@@ -22,7 +22,8 @@
     "url": "git+https://github.com/ensarkovankaya/matris-logger"
   },
   "dependencies": {
-    "pino": "^4.17.3"
+    "pino": "^4.17.3",
+    "pino-std-serializers": "^2.1.0"
   },
   "devDependencies": {
     "@types/chai": "^4.1.4",

@@ -1,16 +1,16 @@
 import * as pino from 'pino';
-import { IChildLoggerOptions, Logger } from './logger';
-import { LogLevel } from './models/loglevel.model';
+import * as serializers from 'pino-std-serializers';
+import { LogLevel } from './log.level';
+import { ILoggerOptions, Logger } from './logger';
 import { userSerializer } from './serializers/user.serializer';
 import { isDevelopment, isTest } from './utils';
 
-export interface ILoggerOptions {
-    name: string;
+export interface IRootConfig {
     level: LogLevel;
     serializers?: { [key: string]: pino.SerializerFn };
 }
 
-interface IRootLoggerOptions extends ILoggerOptions {
+interface IRootLoggerOptions extends IRootConfig {
     nodeEnv?: string;
 }
 
@@ -18,20 +18,21 @@ export class RootLogger {
 
     public options: IRootLoggerOptions;
 
-    constructor(options: Partial<ILoggerOptions> = {}) {
+    constructor(options: Partial<IRootConfig> = {}) {
         const nodeEnv = process ? (process.env ? process.env.NODE_ENV : undefined) : undefined;
         this.options = {
-            name: '',
             level: isTest() ? 'silent' : isDevelopment() ? 'debug' : 'info',
             serializers: {
-                user: userSerializer
+                user: userSerializer,
+                req: serializers.req,
+                res: serializers.res
             },
             nodeEnv,
             ...options
         };
     }
 
-    public getLogger(name: string, labels: string[] = [], overwrites: Partial<IChildLoggerOptions> = {}): Logger {
+    public getLogger(name: string, labels: string[] = [], overwrites: ILoggerOptions = {}): Logger {
         return new Logger(name, labels, pino(this.options), overwrites);
     }
 }

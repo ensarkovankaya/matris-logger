@@ -1,9 +1,9 @@
 import * as http from 'http';
-import {Logger as PinoLogger} from 'pino';
-import { LogLevel } from './models/loglevel.model';
+import { Logger as PinoLogger } from 'pino';
+import { LogLevel } from './log.level';
 
-export interface IChildLoggerOptions {
-    level: LogLevel;
+export interface ILoggerOptions {
+    level?: LogLevel;
 }
 
 export class Logger {
@@ -20,9 +20,9 @@ export class Logger {
         public name: string,
         public labels: string[] = [],
         root: PinoLogger,
-        options: Partial<IChildLoggerOptions> = {}
+        options: ILoggerOptions = {}
     ) {
-        this.logger = root.child({logger: name, labels, ...options});
+        this.logger = root.child({name, labels, ...options});
     }
 
     /**
