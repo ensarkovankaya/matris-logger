@@ -1,5 +1,5 @@
-import { Logger } from "./logger";
-import { LogLevel } from "./models/log.level";
-import { RootLogger } from './root.logger';
+import { Logger } from "./src/logger";
+import { LogLevel } from "./src/models/log.level";
+import { RootLogger } from './src/root.logger';
 
 export { Logger, RootLogger, LogLevel };
