@@ -1,7 +1,7 @@
 {
   "name": "matris-logger",
-  "version": "1.1.5",
-  "description": "Wrapper for winstonjs.",
+  "version": "2.0.0",
+  "description": "Logger for matris",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "directories": {
