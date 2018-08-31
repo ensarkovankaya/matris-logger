@@ -1,10 +1,5 @@
 import * as http from 'http';
 import { Logger as PinoLogger } from 'pino';
-import { LogLevel } from './log.level';
-
-export interface ILoggerOptions {
-    level?: LogLevel;
-}
 
 export class Logger {
     private logger: PinoLogger;
@@ -12,87 +7,94 @@ export class Logger {
     /**
      * Child logger object.
      * @param {string} name: Child logger name.
-     * @param {string[]} labels: Aditional identifier for logger.
      * @param {PinoLogger} root: Root pino logger object.
-     * @param {ILoggerOptions} overwrites: Overwrite options for child.
      */
-    constructor(
-        public name: string,
-        public labels: string[] = [],
-        root: PinoLogger,
-        overwrites: ILoggerOptions = {}
-    ) {
-        this.logger = root.child({name, labels, nodeEnv: process.env.NODE_ENV, ...overwrites});
+    constructor(public name: string, public labels: string[] = [], root: PinoLogger) {
+        this.logger = root.child({ name, labels });
     }
 
     /**
-     * Changes log level
-     * @param {LogLevel} level: new Log level.
-     */
-    public setLevel(level: LogLevel) {
-        this.logger.level = level;
-    }
-
-    /**
-     * Critical Level log
-     * @param {string} message Log message
+     * Critical level log
+     * @param {string} msg Optinal log message
      * @param {Error} error Optinal Error object
-     * @param meta Optional data
+     * @param meta Optional meta data
      */
-    public fatal(message: string, error?: Error, meta?: any) {
+    public fatal(payload: { msg?: string, error?: Error, meta?: any, method?: string }) {
         this.logger.fatal({
-            error: error ? {name: error.name, message: error.message, stack: error.stack} : error,
-            meta
-        }, message);
+            error: payload.error ? {
+                name: payload.error.name,
+                msg: payload.error.message,
+                stack: payload.error.stack
+            } : payload.error,
+            meta: payload.meta,
+            method: payload.method
+        }, payload.msg || '');
     }
 
     /**
-     * Error Level log
-     * @param {string} message Log message
+     * Error level log
+     * @param {string} msg Optinal log message
      * @param {Error} error Error object
-     * @param meta Optional data
+     * @param meta Optional meta data
      */
-    public error(message: string, error: Error, meta?: any) {
+    public error(payload: { msg?: string, error: Error, meta?: any, method?: string }) {
         this.logger.error({
-            error: {name: error.name, message: error.message, stack: error.stack},
-            meta
-        }, message);
+            error: payload.error ? {
+                name: payload.error.name,
+                msg: payload.error.message,
+                stack: payload.error.stack
+            } : payload.error,
+            meta: payload.meta,
+            method: payload.method
+        }, payload.msg || '');
     }
 
     /**
-     * Warning Level log
-     * @param {string} message Log message
-     * @param meta Optional data
+     * Warning level log
+     * @param {string} msg Optinal log message
+     * @param meta Optional meta data
      */
-    public warn(message: string, meta?: any) {
-        this.logger.warn({meta}, message);
+    public warn(payload: { msg?: string, meta?: any, method?: string }) {
+        this.logger.warn({ meta: payload.meta, method: payload.method }, payload.msg || '');
     }
 
     /**
-     * Info Level log
-     * @param {string} message Log message
-     * @param meta Optional data
+     * Info level log
+     * @param {string} msg Optinal log message
+     * @param meta Optional meta data
      */
-    public info(message: string, meta?: any) {
-        this.logger.info({meta}, message);
+    public info(payload: { msg?: string, meta?: any, method?: string }) {
+        this.logger.info({ meta: payload.meta, method: payload.method }, payload.msg || '');
     }
 
     /**
-     * Debug Level log
-     * @param {string} message Log message
-     * @param meta Optional data
+     * Debug level log
+     * @param {string} msg Optinal log message
+     * @param meta Optional meta data
      */
-    public debug(message: string, meta?: any) {
-        this.logger.debug({meta}, message);
+    public debug(payload: { msg?: string, meta?: any, method?: string }) {
+        this.logger.debug({ meta: payload.meta, method: payload.method }, payload.msg || '');
     }
 
     /**
-     * Http Level Log
-     * @param {string} message: Log message
+     * Http level Log
+     * @param {string} msg: Optinal log message
      * @param {http.IncomingMessage} req: Request object
-     * @param meta: Optional data
+     * @param {http.OutgoingMessage} res: Response object
+     * @param meta: Optional meta data
      */
-    public http(message: string, req?: http.IncomingMessage, res?: http.OutgoingMessage, meta?: any) {
-        this.logger.debug({meta, req, res, type: 'http'}, message);
+    public http(payload: {
+        msg?: string,
+        req?: http.IncomingMessage,
+        res?: http.OutgoingMessage,
+        meta?: any,
+        method?: string
+    }) {
+        this.logger.debug({
+            meta: payload.meta,
+            req: payload.req,
+            res: payload.res,
+            method: payload.method
+        }, payload.msg || '');
     }
 }

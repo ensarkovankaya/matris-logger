@@ -1,5 +1,5 @@
-import { LogLevel } from "./log.level";
-import { ILoggerOptions, Logger } from "./logger";
-import { IRootConfig, RootLogger } from './root.logger';
+import { Logger } from "./logger";
+import { LogLevel } from "./models/log.level";
+import { RootLogger } from './root.logger';
 
-export {Logger, RootLogger, ILoggerOptions, IRootConfig, LogLevel};
+export { Logger, RootLogger, LogLevel };
